@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alex Rivera — Full Stack Developer & Designer</title>
-  <meta name="description" content="Cinematic scroll-driven portfolio for Alex Rivera — Full Stack Developer, UI/UX Designer and Creative Coder." />
+  <title>Priya — Developer & AI Enthusiast</title>
+  <meta name="description" content="Portfolio of Priya — Full Stack Developer, AI Enthusiast and Creative Coder. Built innovative AI-powered apps during internship at Nura AI Labs." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -15,7 +15,7 @@
   <!-- ── LOADER ── -->
   <div id="loader" class="loader">
     <div class="loader-inner">
-      <div class="loader-logo">Portfolio</div>
+      <div class="loader-logo">Priya</div>
       <div class="loader-bar-wrap"><div class="loader-bar" id="loaderBar"></div></div>
       <p class="loader-text" id="loaderText">Loading… 0%</p>
     </div>
@@ -23,29 +23,30 @@
 
   <!-- ── MOBILE MENU DRAWER ── -->
   <div id="mobileMenu" class="mobile-menu" role="dialog" aria-modal="true" aria-label="Navigation menu">
-    <a href="#home"     class="mobile-menu-link active" data-section="home">Home</a>
-    <a href="#about"    class="mobile-menu-link" data-section="about">About</a>
-    <a href="#projects" class="mobile-menu-link" data-section="projects">Work</a>
-    <a href="#skills"   class="mobile-menu-link" data-section="skills">Skills</a>
-    <a href="#contact"  class="mobile-menu-link" data-section="contact">Contact</a>
-    <a href="#contact"  class="mobile-menu-cta">Hire Me ↗</a>
+    <a href="#home"       class="mobile-menu-link active" data-section="home">Home</a>
+    <a href="#about"      class="mobile-menu-link" data-section="about">About</a>
+    <a href="#experience" class="mobile-menu-link" data-section="experience">Experience</a>
+    <a href="#projects"   class="mobile-menu-link" data-section="projects">Work</a>
+    <a href="#skills"     class="mobile-menu-link" data-section="skills">Skills</a>
+    <a href="#contact"    class="mobile-menu-link" data-section="contact">Contact</a>
+    <a href="#contact"    class="mobile-menu-cta">Hire Me ↗</a>
   </div>
 
   <!-- ── NAVBAR ── -->
   <nav id="navbar" class="navbar" aria-label="Main navigation">
     <div class="nav-brand">
       <span class="nav-brand-dot"></span>
-      Alex Rivera
+      Priya
     </div>
     <ul class="nav-links" role="list">
-      <li><a href="#home"     class="nav-link active" data-section="home">Home</a></li>
-      <li><a href="#about"    class="nav-link" data-section="about">About</a></li>
-      <li><a href="#projects" class="nav-link" data-section="projects">Work</a></li>
-      <li><a href="#skills"   class="nav-link" data-section="skills">Skills</a></li>
-      <li><a href="#contact"  class="nav-link" data-section="contact">Contact</a></li>
+      <li><a href="#home"       class="nav-link active" data-section="home">Home</a></li>
+      <li><a href="#about"      class="nav-link" data-section="about">About</a></li>
+      <li><a href="#experience" class="nav-link" data-section="experience">Experience</a></li>
+      <li><a href="#projects"   class="nav-link" data-section="projects">Work</a></li>
+      <li><a href="#skills"     class="nav-link" data-section="skills">Skills</a></li>
+      <li><a href="#contact"    class="nav-link" data-section="contact">Contact</a></li>
     </ul>
-    <a href="#contact" class="nav-cta" id="navCta">Hire Me ↗</a>
-    <!-- Hamburger — mobile only -->
+    <a href="mailto:priya@example.com" class="nav-cta" id="navCta">Hire Me ↗</a>
     <button class="nav-hamburger" id="navHamburger" aria-label="Toggle navigation" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -73,12 +74,12 @@
       <div class="scene-overlay scene-hero" id="sceneHero">
         <div class="hero-left">
           <p class="hero-eyebrow"><span class="eyebrow-dot"></span> Available for work</p>
-          <h1 class="hero-title">Hi, I'm <span class="gradient-text">Alex</span></h1>
+          <h1 class="hero-title">Hi, I'm <span class="gradient-text">Priya</span></h1>
           <!-- Role cycling text -->
           <div class="role-cycle" id="roleCycle">
             <span class="role-word" id="roleWord">Web Developer</span>
           </div>
-          <p class="hero-sub">I build things for the web — from elegant interfaces to scalable systems.</p>
+          <p class="hero-sub">I build things for the web & beyond — from elegant interfaces to AI-powered systems.</p>
           <div class="hero-actions">
             <a href="#projects" class="btn-primary" id="viewWorkBtn">View My Work</a>
             <a href="#contact"  class="btn-ghost"   id="sayHiBtn">Say Hello</a>
@@ -88,21 +89,18 @@
 
       <!-- ── ABOUT OVERLAY (frames 70–109, wave moment) ── -->
       <div class="scene-overlay scene-about" id="sceneAbout">
-        <!-- Big Hi text that appears on wave -->
-        <div class="hi-reveal" id="hiReveal">
-          <!-- <span class="hi-text">Hi!</span> -->
-        </div>
+        <div class="hi-reveal" id="hiReveal"></div>
         <!-- About panel slides in from right -->
         <div class="about-panel" id="aboutPanel">
           <p class="section-label">About Me</p>
           <h2 class="about-headline">I turn <span class="gradient-text">ideas</span><br/>into reality.</h2>
           <p class="about-body">
-            Full Stack Developer & UI/UX Designer with a passion for crafting immersive digital experiences. I bridge design and code — from pixel-perfect interfaces to robust backend systems.
+            Full Stack Developer & AI Enthusiast with a passion for crafting immersive digital experiences. I completed a 15-day internship at Nura AI Labs where I built AI-powered applications. I also freelance building websites for businesses.
           </p>
           <div class="about-stats">
-            <div class="stat"><span class="stat-num gradient-text">3+</span><span class="stat-label">Years Exp.</span></div>
-            <div class="stat"><span class="stat-num gradient-text">20+</span><span class="stat-label">Projects</span></div>
-            <div class="stat"><span class="stat-num gradient-text">5</span><span class="stat-label">Hackathons</span></div>
+            <div class="stat"><span class="stat-num gradient-text">5+</span><span class="stat-label">Projects</span></div>
+            <div class="stat"><span class="stat-num gradient-text">2</span><span class="stat-label">Freelance Sites</span></div>
+            <div class="stat"><span class="stat-num gradient-text">1</span><span class="stat-label">Internship</span></div>
           </div>
         </div>
       </div>
@@ -120,7 +118,71 @@
   </div><!-- end #haWrapper -->
 
   <!-- ══════════════════════════════════════════
-       SECTION 2: PROJECTS (horizontal scroll)
+       SECTION 2: EXPERIENCE / TIMELINE
+  ══════════════════════════════════════════ -->
+  <section id="experience" class="experience-section">
+    <div class="experience-inner">
+      <div class="exp-header reveal">
+        <p class="section-label">My Journey</p>
+        <h2 class="section-title">Experience &amp; <span class="gradient-text">Education.</span></h2>
+      </div>
+
+      <div class="timeline">
+
+        <div class="timeline-item reveal" id="tl1">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="tl-meta">
+              <span class="tl-date">2024 · 15 Days</span>
+              <span class="tl-badge badge-intern">Internship</span>
+            </div>
+            <h3 class="tl-title">AI Developer Intern</h3>
+            <p class="tl-company">🏢 Nura AI Labs</p>
+            <p class="tl-desc">Built two production-grade AI-powered applications in 15 days: an AI calorie tracker using voice & camera input, and an internal company task management system. Worked with multimodal AI APIs, computer vision, and real-time data pipelines.</p>
+            <div class="tl-tags">
+              <span>Python</span><span>OpenAI API</span><span>Computer Vision</span><span>FastAPI</span><span>React</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal" id="tl2">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="tl-meta">
+              <span class="tl-date">2023–Present</span>
+              <span class="tl-badge badge-freelance">Freelance</span>
+            </div>
+            <h3 class="tl-title">Freelance Web Developer</h3>
+            <p class="tl-company">🌐 Self-Employed</p>
+            <p class="tl-desc">Designed and developed 2 full websites for local businesses — a bakery and a boutique fitness studio. Delivered responsive, SEO-optimized sites with custom CMS integration and analytics dashboards.</p>
+            <div class="tl-tags">
+              <span>HTML/CSS</span><span>JavaScript</span><span>WordPress</span><span>SEO</span><span>Figma</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="timeline-item reveal" id="tl3">
+          <div class="timeline-dot"></div>
+          <div class="timeline-card">
+            <div class="tl-meta">
+              <span class="tl-date">2022–Present</span>
+              <span class="tl-badge badge-edu">Education</span>
+            </div>
+            <h3 class="tl-title">B.Tech — Computer Science</h3>
+            <p class="tl-company">🎓 Ongoing</p>
+            <p class="tl-desc">Studying Computer Science with a focus on AI, Machine Learning, and full-stack web development. Active participant in college hackathons and coding competitions.</p>
+            <div class="tl-tags">
+              <span>DSA</span><span>Machine Learning</span><span>DBMS</span><span>Networks</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════
+       SECTION 3: PROJECTS (horizontal scroll)
   ══════════════════════════════════════════ -->
   <section id="projects" class="projects-section">
     <div class="projects-sticky" id="projectsSticky">
@@ -132,44 +194,64 @@
       <div class="projects-track-wrap">
         <div class="projects-track" id="projectsTrack">
 
+          <!-- Card 1: NuraCalorie AI -->
           <article class="pcard" id="pc1">
-            <div class="pcard-tag">Web App</div>
-            <h3 class="pcard-title">Lumina Design System</h3>
-            <p class="pcard-desc">A fully documented component library with 60+ accessible components, dark/light modes, and comprehensive Storybook docs.</p>
-            <div class="pcard-stack"><span>React</span><span>TypeScript</span><span>Storybook</span></div>
+            <div class="pcard-badge">🏢 Nura AI Labs</div>
+            <div class="pcard-tag">AI / Mobile</div>
+            <h3 class="pcard-title">NuraCalorie — AI Food Tracker</h3>
+            <p class="pcard-desc">AI-powered calorie tracker using voice commands and camera recognition to log meals. Simply speak or show your food to the camera — the AI identifies it and logs nutrition data automatically.</p>
+            <div class="pcard-stack"><span>Python</span><span>OpenAI Vision</span><span>FastAPI</span><span>React Native</span></div>
             <a href="#" class="pcard-link" id="pc1link">View Project ↗</a>
           </article>
 
+          <!-- Card 2: NuraTask -->
           <article class="pcard" id="pc2">
-            <div class="pcard-tag">Full Stack</div>
-            <h3 class="pcard-title">Nexus Analytics</h3>
-            <p class="pcard-desc">Real-time data dashboard with custom chart engine, WebSocket live feeds, AI-powered insights, and 99.9% uptime SLA.</p>
-            <div class="pcard-stack"><span>Next.js</span><span>Python</span><span>PostgreSQL</span></div>
+            <div class="pcard-badge">🏢 Nura AI Labs</div>
+            <div class="pcard-tag">Full Stack · Internal Tool</div>
+            <h3 class="pcard-title">NuraTask — Internal Task Manager</h3>
+            <p class="pcard-desc">Built a complete internal task management system for Nura AI Labs during the 15-day internship. Features AI-powered task prioritization, team collaboration, and real-time progress dashboards.</p>
+            <div class="pcard-stack"><span>React</span><span>Node.js</span><span>MongoDB</span><span>Socket.io</span></div>
             <a href="#" class="pcard-link" id="pc2link">View Project ↗</a>
           </article>
 
+          <!-- Card 3: Freelance Site 1 -->
           <article class="pcard" id="pc3">
-            <div class="pcard-tag">3D / Creative</div>
-            <h3 class="pcard-title">Aether Portfolio</h3>
-            <p class="pcard-desc">Cinematic scroll-driven 3D experience with custom GLSL shaders, physics-based interactions, and 60fps performance.</p>
-            <div class="pcard-stack"><span>Three.js</span><span>GSAP</span><span>WebGL</span></div>
+            <div class="pcard-badge">💼 Freelance</div>
+            <div class="pcard-tag">Web · Freelance</div>
+            <h3 class="pcard-title">Business Website — Bakery</h3>
+            <p class="pcard-desc">Designed and built a full responsive website for a local bakery — featuring online ordering, gallery, SEO optimization, and Google Analytics integration. Delivered within 1 week.</p>
+            <div class="pcard-stack"><span>HTML/CSS</span><span>JavaScript</span><span>WordPress</span><span>SEO</span></div>
             <a href="#" class="pcard-link" id="pc3link">View Project ↗</a>
           </article>
 
+          <!-- Card 4: Freelance Site 2 -->
           <article class="pcard" id="pc4">
-            <div class="pcard-tag">Mobile</div>
-            <h3 class="pcard-title">Pulse Fitness App</h3>
-            <p class="pcard-desc">Cross-platform fitness tracker with AI workout planning, real-time heart rate monitoring, and social challenges.</p>
-            <div class="pcard-stack"><span>React Native</span><span>Node.js</span><span>AWS</span></div>
+            <div class="pcard-badge">💼 Freelance</div>
+            <div class="pcard-tag">Web · Freelance</div>
+            <h3 class="pcard-title">Business Website — Fitness Studio</h3>
+            <p class="pcard-desc">Built a premium website for a boutique fitness studio with class scheduling, trainer profiles, and membership sign-ups. Mobile-first design with smooth animations and CMS for easy updates.</p>
+            <div class="pcard-stack"><span>React</span><span>Tailwind</span><span>Sanity CMS</span><span>Vercel</span></div>
             <a href="#" class="pcard-link" id="pc4link">View Project ↗</a>
           </article>
 
+          <!-- Card 5: Portfolio itself -->
           <article class="pcard" id="pc5">
-            <div class="pcard-tag">AI / ML</div>
-            <h3 class="pcard-title">Orion AI Chat</h3>
-            <p class="pcard-desc">Context-aware conversational AI with multi-modal inputs, RAG pipeline, and fine-tuned LLM — built in 48 hours.</p>
-            <div class="pcard-stack"><span>Python</span><span>LangChain</span><span>FastAPI</span></div>
+            <div class="pcard-badge">✨ Personal</div>
+            <div class="pcard-tag">3D / Creative</div>
+            <h3 class="pcard-title">This Portfolio</h3>
+            <p class="pcard-desc">Cinematic scroll-driven 3D experience with frame-by-frame animation, horizontal scroll projects, real-time canvas rendering, and smooth scroll-linked overlays. Zero libraries.</p>
+            <div class="pcard-stack"><span>Vanilla JS</span><span>Canvas API</span><span>CSS Animations</span><span>WebGL</span></div>
             <a href="#" class="pcard-link" id="pc5link">View Project ↗</a>
+          </article>
+
+          <!-- Card 6: AI Chat App -->
+          <article class="pcard" id="pc6">
+            <div class="pcard-badge">🤖 Personal</div>
+            <div class="pcard-tag">AI / ML</div>
+            <h3 class="pcard-title">AI Study Assistant</h3>
+            <p class="pcard-desc">Context-aware study assistant that summarizes PDFs, answers questions about uploaded documents, and generates practice quizzes using RAG architecture and LLM fine-tuning.</p>
+            <div class="pcard-stack"><span>Python</span><span>LangChain</span><span>FastAPI</span><span>React</span></div>
+            <a href="#" class="pcard-link" id="pc6link">View Project ↗</a>
           </article>
 
         </div><!-- end .projects-track -->
@@ -179,11 +261,11 @@
   </section>
 
   <!-- ══════════════════════════════════════════
-       SECTION 3: SKILLS
+       SECTION 4: SKILLS
   ══════════════════════════════════════════ -->
   <section id="skills" class="skills-section">
     <div class="skills-inner">
-      <div class="skills-header">
+      <div class="skills-header reveal">
         <p class="section-label">Expertise</p>
         <h2 class="section-title">Where design<br/><span class="gradient-text">meets code.</span></h2>
         <p class="skills-sub">Comfortable across the full stack — from Figma to production.</p>
@@ -194,31 +276,31 @@
           <h3 class="skill-group-title">Frontend</h3>
           <div class="skill-tags">
             <span>React</span><span>Next.js</span><span>TypeScript</span>
-            <span>GSAP</span><span>Three.js</span><span>CSS / Tailwind</span>
+            <span>HTML / CSS</span><span>Three.js</span><span>Tailwind</span>
           </div>
         </div>
         <div class="skill-group" id="sg2">
           <div class="skill-group-icon">🛠</div>
           <h3 class="skill-group-title">Backend</h3>
           <div class="skill-tags">
-            <span>Node.js</span><span>Python</span><span>PostgreSQL</span>
-            <span>MongoDB</span><span>GraphQL</span><span>REST APIs</span>
+            <span>Node.js</span><span>Python</span><span>FastAPI</span>
+            <span>MongoDB</span><span>PostgreSQL</span><span>REST APIs</span>
           </div>
         </div>
         <div class="skill-group" id="sg3">
-          <div class="skill-group-icon">🎨</div>
-          <h3 class="skill-group-title">Design</h3>
+          <div class="skill-group-icon">🤖</div>
+          <h3 class="skill-group-title">AI / ML</h3>
           <div class="skill-tags">
-            <span>Figma</span><span>Motion</span><span>Systems</span>
-            <span>Prototyping</span><span>User Research</span><span>Branding</span>
+            <span>OpenAI API</span><span>LangChain</span><span>Computer Vision</span>
+            <span>NLP</span><span>RAG</span><span>Hugging Face</span>
           </div>
         </div>
         <div class="skill-group" id="sg4">
-          <div class="skill-group-icon">☁️</div>
-          <h3 class="skill-group-title">DevOps / Cloud</h3>
+          <div class="skill-group-icon">🎨</div>
+          <h3 class="skill-group-title">Design & Tools</h3>
           <div class="skill-tags">
-            <span>AWS</span><span>Docker</span><span>Vercel</span>
-            <span>CI/CD</span><span>Linux</span><span>Git</span>
+            <span>Figma</span><span>Git / GitHub</span><span>Docker</span>
+            <span>Vercel</span><span>Firebase</span><span>Linux</span>
           </div>
         </div>
       </div>
@@ -226,37 +308,89 @@
   </section>
 
   <!-- ══════════════════════════════════════════
-       SECTION 4: CONTACT (chair animation canvas)
+       SECTION 5: CONTACT (3D CSS animated scene)
   ══════════════════════════════════════════ -->
-  <div id="contactWrapper" class="contact-wrapper">
-    <div class="contact-stage" id="contactStage">
-      <canvas id="contactCanvas" class="contact-canvas"></canvas>
-      <div class="stage-vignette"></div>
-      <div class="contact-overlay" id="contactOverlay">
-        <div class="contact-content">
-          <p class="section-label">Get In Touch</p>
-          <h2 class="contact-headline">Let's build something<br/><span class="gradient-text">amazing.</span></h2>
-          <p class="contact-sub">Open to full-time roles, freelance, and interesting collaborations.</p>
-          <div class="contact-actions">
-            <a href="mailto:alex@example.com" class="btn-primary" id="contactBtn">Say Hello →</a>
-            <a href="#" class="btn-ghost" id="resumeBtn">Resume ↗</a>
-          </div>
-          <div class="social-row" id="socialRow">
-            <a href="#" class="social-link" id="ghLink" aria-label="GitHub">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
-            </a>
-            <a href="#" class="social-link" id="liLink" aria-label="LinkedIn">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
-            </a>
-            <a href="#" class="social-link" id="xLink" aria-label="Twitter/X">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.746l7.73-8.835L1.254 2.25H8.08l4.253 5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
-            </a>
-          </div>
+  <section id="contact" class="contact-section">
+
+    <!-- 3D floating shapes background -->
+    <div class="contact-3d-bg" aria-hidden="true">
+      <div class="shape shape-cube" id="cube1"></div>
+      <div class="shape shape-cube" id="cube2"></div>
+      <div class="shape shape-sphere" id="sphere1"></div>
+      <div class="shape shape-sphere" id="sphere2"></div>
+      <div class="shape shape-ring" id="ring1"></div>
+      <div class="shape shape-ring" id="ring2"></div>
+      <div class="shape shape-dot-grid" id="dotGrid"></div>
+    </div>
+
+    <div class="contact-inner">
+
+      <!-- Left: headline + info -->
+      <div class="contact-left reveal">
+        <p class="section-label">Get In Touch</p>
+        <h2 class="contact-headline">Let's build something<br/><span class="gradient-text">amazing.</span></h2>
+        <p class="contact-sub">Open to internships, full-time roles, freelance, and interesting collaborations.</p>
+
+        <div class="contact-info-list">
+          <a href="mailto:priya9407@example.com" class="contact-info-row" id="emailLink">
+            <div class="contact-info-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+            </div>
+            <span>priya9407@example.com</span>
+          </a>
+          <a href="https://linkedin.com/in/priya" target="_blank" class="contact-info-row" id="liLink2">
+            <div class="contact-info-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            </div>
+            <span>linkedin.com/in/priya</span>
+          </a>
+          <a href="https://github.com/Priya9407" target="_blank" class="contact-info-row" id="ghLink2">
+            <div class="contact-info-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            </div>
+            <span>github.com/Priya9407</span>
+          </a>
+        </div>
+
+        <div class="social-row" id="socialRow">
+          <a href="https://github.com/Priya9407" target="_blank" class="social-link" id="ghLink" aria-label="GitHub">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+          </a>
+          <a href="https://linkedin.com/in/priya" target="_blank" class="social-link" id="liLink" aria-label="LinkedIn">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          </a>
+          <a href="mailto:priya9407@example.com" class="social-link" id="xLink" aria-label="Email">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 7L2 7"/></svg>
+          </a>
         </div>
       </div>
+
+      <!-- Right: contact form -->
+      <div class="contact-right reveal">
+        <form class="contact-form" id="contactForm">
+          <div class="form-row">
+            <input type="text" id="cfName" name="name" placeholder="Your name" required />
+            <input type="email" id="cfEmail" name="email" placeholder="Your email" required />
+          </div>
+          <input type="text" id="cfSubject" name="subject" placeholder="Subject" />
+          <textarea id="cfMessage" name="message" rows="5" placeholder="Tell me about your project…" required></textarea>
+          <button type="submit" class="btn-primary form-submit" id="contactBtn">Send Message →</button>
+          <p class="form-note">Opens your email app with this filled in.</p>
+        </form>
+
+        <div class="contact-actions">
+          <a href="#" class="btn-ghost" id="resumeBtn">Download Resume ↗</a>
+        </div>
+      </div>
+
     </div>
-    <div class="contact-spacer"></div>
-  </div><!-- end #contactWrapper -->
+
+    <!-- Footer strip -->
+    <div class="contact-footer">
+      <p class="footer-text">Designed & Built by <span class="gradient-text">Priya</span> · 2024</p>
+    </div>
+
+  </section>
 
   <script src="app.js"></script>
 </body>

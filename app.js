@@ -1,37 +1,30 @@
 /**
- * PORTFOLIO — app.js
+ * PORTFOLIO — app.js  (updated)
  * Architecture:
  *   1. Hero + About  → sticky canvas (frames 1–109, ha-wrapper)
- *   2. Projects      → horizontal scroll (no canvas)
- *   3. Skills        → intersection observer reveals
- *   4. Contact       → sticky canvas (frames 110–146, contact-wrapper)
+ *   2. Experience    → scroll-reveal timeline
+ *   3. Projects      → horizontal scroll (no canvas)
+ *   4. Skills        → intersection observer reveals
+ *   5. Contact       → pure CSS 3D animation scene (NO canvas)
  *
- * Mobile: uses frames1/ folder (portrait-cropped)
- * Desktop: uses frames/ folder
+ * Single frame set (frames/) is used for the hero/about sticky canvas only.
  */
 'use strict';
 
 /* ══════════════════════════════════════════════════
-   MOBILE DETECTION & FRAME CONFIG
+   CONFIG
 ══════════════════════════════════════════════════ */
 const IS_MOBILE   = () => window.innerWidth <= 768;
-const FRAME_DIR   = () => IS_MOBILE() ? 'frames2/' : 'frames/';
-const TOTAL       = 146;
+const TOTAL       = 70;   // only hero+about frames (1–70)
 
-/* Frame ranges */
-const HA_START    = 1;    // hero+about canvas start
-const HA_END      = 70;  // hero+about canvas end
-const HA_WAVE     = 73;   // frame where character waves "Hi"
+const HA_START    = 1;
+const HA_END      = 70;
 
-const CTX_START   = 70;  // contact canvas start
-const CTX_END     = 146;  // contact canvas end
-
-/* Role texts for hero cycling */
 const ROLES = [
   'Web Developer',
-  'UI/UX Designer',
-  'Coder',
-  'Creative Builder',
+  'AI Enthusiast',
+  'Creative Coder',
+  'Problem Solver',
 ];
 
 /* ══════════════════════════════════════════════════
@@ -52,11 +45,6 @@ const haCanvas    = $('animCanvas');
 const haCtx       = haCanvas.getContext('2d');
 const haWrapper   = $('haWrapper');
 
-// Contact canvas
-const ctxCanvas   = $('contactCanvas');
-const ctxCtx      = ctxCanvas.getContext('2d');
-const ctxWrapper  = $('contactWrapper');
-
 // Scene overlays
 const sceneHero   = $('sceneHero');
 const sceneAbout  = $('sceneAbout');
@@ -70,10 +58,6 @@ const projTrack   = $('projectsTrack');
 const projSection = $('projects');
 const projSpacer  = $('projectsSpacer');
 
-// Contact overlay
-const ctxOverlay  = $('contactOverlay');
-const socialRow   = $('socialRow');
-
 // Orbs
 const orbs = $$('.orb');
 
@@ -84,17 +68,14 @@ const mobileMenu  = $('mobileMenu');
 /* ══════════════════════════════════════════════════
    STATE
 ══════════════════════════════════════════════════ */
-let frames       = [];          // all frame Image objects [1..146]
-let loadedCount  = 0;
-let haCurFrame   = 1;           // currently rendered HA frame (lerped)
-let haTargetFrame= 1;
-let ctxCurFrame  = CTX_START;   // currently rendered Contact frame (lerped)
-let ctxTargetFrame = CTX_START;
-let rafId        = null;
+let frames        = [];
+let loadedCount   = 0;
+let haCurFrame    = 1;
+let haTargetFrame = 1;
+let rafId         = null;
 let currentRoleIdx = 0;
-let roleTimeout  = null;
-let isMobileNow  = IS_MOBILE();
-let menuOpen     = false;
+let isMobileNow   = IS_MOBILE();
+let menuOpen      = false;
 
 /* ══════════════════════════════════════════════════
    HAMBURGER / MOBILE MENU
@@ -104,14 +85,12 @@ function toggleMenu(force) {
   hamburger.classList.toggle('open', menuOpen);
   mobileMenu.classList.toggle('open', menuOpen);
   hamburger.setAttribute('aria-expanded', String(menuOpen));
-  // Prevent body scroll when menu is open
   document.body.style.overflow = menuOpen ? 'hidden' : '';
 }
 
 function setupHamburger() {
   hamburger.addEventListener('click', () => toggleMenu());
 
-  // Close on any mobile menu link click
   $$('.mobile-menu-link, .mobile-menu-cta').forEach(a => {
     a.addEventListener('click', e => {
       const href = a.getAttribute('href');
@@ -119,46 +98,41 @@ function setupHamburger() {
       if (href && href.startsWith('#')) {
         e.preventDefault();
         const key = href.slice(1);
-        const targets = {
-          home:     () => 0,
-          about:    () => haWrapper.offsetTop + haWrapper.offsetHeight * 0.55,
-          projects: () => projSection.offsetTop,
-          skills:   () => ($('skills') || {}).offsetTop || 0,
-          contact:  () => ctxWrapper.offsetTop,
-        };
-        if (targets[key]) {
-          window.scrollTo({ top: targets[key](), behavior: 'smooth' });
+        const el = document.getElementById(key);
+        if (el) {
+          const top = key === 'home' ? 0 :
+                      key === 'about' ? haWrapper.offsetTop + haWrapper.offsetHeight * 0.55 :
+                      el.offsetTop;
+          window.scrollTo({ top, behavior: 'smooth' });
+        } else if (key === 'home') {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
         }
       }
     });
   });
 
-  // Close on backdrop click (clicking outside the links)
   mobileMenu.addEventListener('click', e => {
     if (e.target === mobileMenu) toggleMenu(false);
   });
 
-  // Close on Escape key
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape' && menuOpen) toggleMenu(false);
   });
 }
 
 /* ══════════════════════════════════════════════════
-   FRAME LOADING
+   FRAME LOADING  (frames 1–70 for hero/about only)
 ══════════════════════════════════════════════════ */
 function frameSrc(n) {
-  const dir    = IS_MOBILE() ? 'frames2/' : 'frames/';
-  const padded = String(n).padStart(3, '0');
-  return `${dir}frame_${padded}.jpg`;
+  return `frames/frame_${String(n).padStart(3,'0')}.jpg`;
 }
 
 function preloadAll() {
   return new Promise(resolve => {
     for (let n = 1; n <= TOTAL; n++) {
       const img = new Image();
-      frames[n]  = img;
-      img.src    = frameSrc(n);
+      frames[n] = img;
+      img.src   = frameSrc(n);
 
       img.onload = img.onerror = () => {
         loadedCount++;
@@ -173,53 +147,56 @@ function preloadAll() {
 }
 
 /* ══════════════════════════════════════════════════
-   CANVAS RESIZE — fit to width
+   CANVAS RESIZE
 ══════════════════════════════════════════════════ */
 function resizeCanvases() {
   const dpr = window.devicePixelRatio || 1;
-  [haCanvas, ctxCanvas].forEach(c => {
-    c.width  = window.innerWidth  * dpr;
-    c.height = window.innerHeight * dpr;
-    c.style.width  = window.innerWidth  + 'px';
-    c.style.height = window.innerHeight + 'px';
-  });
-  // Re-scale contexts
+  haCanvas.width  = window.innerWidth  * dpr;
+  haCanvas.height = window.innerHeight * dpr;
+  haCanvas.style.width  = window.innerWidth  + 'px';
+  haCanvas.style.height = window.innerHeight + 'px';
   haCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
-  ctxCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 }
 
 /* ══════════════════════════════════════════════════
-   DRAW — fit to WIDTH (full bleed, vertically centred)
+   DRAW — fit to width, vertically centred
 ══════════════════════════════════════════════════ */
-function drawToCanvas(ctx2d, canvas2d, img) {
+function drawToCanvas(ctx2d, img) {
   if (!img || !img.complete || !img.naturalWidth) return;
   const cw = window.innerWidth;
   const ch = window.innerHeight;
   const iw = img.naturalWidth;
   const ih = img.naturalHeight;
 
-  const scale = cw / iw;          // fit to full width
-  const dw    = cw;
-  const dh    = ih * scale;
-  const dy    = (ch - dh) / 2;    // vertically centred
-
   ctx2d.clearRect(0, 0, cw, ch);
-  ctx2d.fillStyle = '#B8AFA3';    // warm greige — matches frame wall
+  ctx2d.fillStyle = '#B8AFA3'; // warm greige — matches frame wall
   ctx2d.fillRect(0, 0, cw, ch);
-  ctx2d.drawImage(img, 0, 0, iw, ih, 0, dy, dw, dh);
+
+  if (IS_MOBILE()) {
+    // COVER: scale up to fill, crop overflow
+    const scale = Math.max(cw / iw, ch / ih);
+    const dw = iw * scale, dh = ih * scale;
+    const dx = (cw - dw) / 2, dy = (ch - dh) / 2;
+    ctx2d.drawImage(img, 0, 0, iw, ih, dx, dy, dw, dh);
+  } else {
+    // FIT-TO-WIDTH: full bleed width, centred vertically
+    const scale = cw / iw;
+    const dw = cw, dh = ih * scale;
+    const dy = (ch - dh) / 2;
+    ctx2d.drawImage(img, 0, 0, iw, ih, 0, dy, dw, dh);
+  }
 }
 
-function drawHAFrame(img)  { drawToCanvas(haCtx,  haCanvas,  img); }
-function drawCtxFrame(img) { drawToCanvas(ctxCtx, ctxCanvas, img); }
+function drawHAFrame(img) { drawToCanvas(haCtx, img); }
 
 /* ══════════════════════════════════════════════════
-   HA SECTION — progress → frame (frames 1–109)
+   HA SECTION — progress → frame
 ══════════════════════════════════════════════════ */
 function haProgress() {
-  const wrapTop    = haWrapper.offsetTop;
-  const wrapH      = haWrapper.offsetHeight; // includes ha-spacer
-  const scrolled   = window.scrollY - wrapTop;
-  const maxScroll  = wrapH - window.innerHeight;
+  const wrapTop  = haWrapper.offsetTop;
+  const wrapH    = haWrapper.offsetHeight;
+  const scrolled = window.scrollY - wrapTop;
+  const maxScroll= wrapH - window.innerHeight;
   return Math.max(0, Math.min(1, scrolled / maxScroll));
 }
 
@@ -228,37 +205,15 @@ function haProgressToFrame(p) {
 }
 
 /* ══════════════════════════════════════════════════
-   CONTACT SECTION — progress → frame (frames 110–146)
-══════════════════════════════════════════════════ */
-function ctxProgress() {
-  const wrapTop  = ctxWrapper.offsetTop;
-  const wrapH    = ctxWrapper.offsetHeight;
-  const scrolled = window.scrollY - wrapTop;
-  const maxScroll= wrapH - window.innerHeight;
-  return Math.max(0, Math.min(1, scrolled / maxScroll));
-}
-
-function ctxProgressToFrame(p) {
-  return Math.round(CTX_START + p * (CTX_END - CTX_START));
-}
-
-/* ══════════════════════════════════════════════════
    SCENE STATE — driven by HA progress
 ══════════════════════════════════════════════════ */
 function updateHAScenes(p) {
-  const frame = haProgressToFrame(p);
-
-  // Progress within hero phase: 0→50% of total HA scroll
-  const heroP   = Math.max(0, Math.min(1, p / 0.50));
-  // Progress within about phase: 50→100%
-  const aboutP  = Math.max(0, Math.min(1, (p - 0.50) / 0.50));
-
   /* ── Hero overlay: visible during first 55% ── */
   const heroVisible = p < 0.55;
   sceneHero.classList.toggle('active', heroVisible);
 
-  /* ── Role cycling: depends on heroP ── */
   if (heroVisible) {
+    const heroP = Math.max(0, Math.min(1, p / 0.50));
     const idx = Math.min(ROLES.length - 1, Math.floor(heroP * ROLES.length));
     if (idx !== currentRoleIdx) setRole(idx);
     scrollHint.style.opacity = String(Math.max(0, 1 - p * 4));
@@ -269,27 +224,24 @@ function updateHAScenes(p) {
   sceneAbout.classList.toggle('active', aboutVisible);
 
   if (aboutVisible) {
-    /* Big "Hi!" visible during 45–65% */
     const hiShow = p > 0.45 && p < 0.68;
     hiReveal.classList.toggle('show', hiShow);
-
-    /* About panel: visible after 62% */
     aboutPanel.classList.toggle('show', p > 0.62);
   }
 
-  /* ── Background mood shift ── */
+  /* ── Background mood / orbs ── */
   if (p < 0.5) {
-    stageGrad.style.background = `radial-gradient(ellipse 80% 80% at 50% 110%, rgba(18,14,11,0) 0%, rgba(18,14,11,${0.35 + p * 0.3}) 100%)`;
     orbs[0].classList.remove('visible'); orbs[1].classList.remove('visible');
   } else {
-    stageGrad.style.background = `radial-gradient(ellipse 80% 80% at 20% 50%, rgba(184,90,58,0.05) 0%, rgba(18,14,11,${0.5 + aboutP * 0.25}) 100%)`;
     orbs[0].classList.add('visible'); orbs[1].classList.add('visible');
   }
 
-  /* ── Nav active link ── */
+  /* ── Nav active ── */
   $$('.nav-link, .mobile-menu-link').forEach(a => {
     const s = a.dataset.section;
-    a.classList.toggle('active', (p < 0.5 && s === 'home') || (p >= 0.5 && s === 'about'));
+    a.classList.toggle('active',
+      (p < 0.5 && s === 'home') || (p >= 0.5 && s === 'about')
+    );
   });
 }
 
@@ -316,10 +268,9 @@ function setupProjectsSpacer() {
     projSpacer.style.height = '0px';
     return;
   }
-  // Extra scroll height = track overflow
   const trackW   = projTrack.scrollWidth;
   const viewW    = window.innerWidth;
-  const overflow = Math.max(0, trackW - viewW + 96); // +padding
+  const overflow = Math.max(0, trackW - viewW + 96);
   projSpacer.style.height = overflow + 'px';
 }
 
@@ -332,19 +283,22 @@ function updateProjectsScroll() {
   const maxScroll  = sectionH - window.innerHeight;
   const p          = Math.max(0, Math.min(1, scrolled / maxScroll));
 
-  const trackW     = projTrack.scrollWidth;
-  const viewW      = window.innerWidth;
-  const maxTx      = -(trackW - viewW + 96);
+  const trackW   = projTrack.scrollWidth;
+  const viewW    = window.innerWidth;
+  const maxTx    = -(trackW - viewW + 96);
   projTrack.style.transform = `translateX(${p * maxTx}px)`;
 
-  // Nav active
-  if (p > 0) $$('.nav-link, .mobile-menu-link').forEach(a => a.classList.toggle('active', a.dataset.section === 'projects'));
+  if (p > 0) {
+    $$('.nav-link, .mobile-menu-link').forEach(a =>
+      a.classList.toggle('active', a.dataset.section === 'projects')
+    );
+  }
 }
 
 /* ══════════════════════════════════════════════════
-   SKILLS — intersection observer
+   SCROLL REVEAL — IntersectionObserver
 ══════════════════════════════════════════════════ */
-function setupSkillsObserver() {
+function setupScrollReveal() {
   const io = new IntersectionObserver((entries) => {
     entries.forEach(e => {
       if (e.isIntersecting) {
@@ -352,27 +306,110 @@ function setupSkillsObserver() {
         io.unobserve(e.target);
       }
     });
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+  // Reveal all .reveal elements
+  $$('.reveal, .reveal-left, .reveal-right').forEach((el, i) => {
+    // Stagger sibling items
+    const parent = el.parentElement;
+    const siblings = parent ? Array.from(parent.querySelectorAll('.reveal, .reveal-left, .reveal-right')) : [];
+    const sibIdx = siblings.indexOf(el);
+    if (sibIdx > 0) el.style.transitionDelay = (sibIdx * 80) + 'ms';
+    io.observe(el);
+  });
+
+  // Skills cards stagger
+  const skillIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        skillIo.unobserve(e.target);
+      }
+    });
   }, { threshold: 0.15 });
 
   $$('.skill-group').forEach((el, i) => {
-    el.style.transitionDelay = (i * 80) + 'ms';
-    io.observe(el);
+    el.style.transitionDelay = (i * 90) + 'ms';
+    skillIo.observe(el);
+  });
+
+  // Timeline items stagger
+  const tlIo = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        tlIo.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  $$('.timeline-item').forEach((el, i) => {
+    el.style.transitionDelay = (i * 120) + 'ms';
+    tlIo.observe(el);
   });
 }
 
 /* ══════════════════════════════════════════════════
-   CONTACT CANVAS
+   3D TILT EFFECT — project & skill cards
 ══════════════════════════════════════════════════ */
-function updateContactCanvas() {
-  const p = ctxProgress();
-  ctxTargetFrame = ctxProgressToFrame(p);
+function setupTilt(selector, maxTilt) {
+  $$(selector).forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r  = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top)  / r.height;
+      const rx = (0.5 - py) * maxTilt;
+      const ry = (px - 0.5) * maxTilt;
+      card.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+      card.style.setProperty('--ry', ry.toFixed(2) + 'deg');
+      card.style.setProperty('--mx', (px * 100).toFixed(1) + '%');
+      card.style.setProperty('--my', (py * 100).toFixed(1) + '%');
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.setProperty('--rx', '0deg');
+      card.style.setProperty('--ry', '0deg');
+    });
+  });
+}
 
-  // Show overlay once progress starts
-  ctxOverlay.classList.toggle('show', p > 0.15);
-  if (p > 0.6) socialRow.classList.add('visible');
+/* ══════════════════════════════════════════════════
+   CONTACT FORM — prefilled mailto
+══════════════════════════════════════════════════ */
+function setupContactForm() {
+  const form = $('contactForm');
+  if (!form) return;
 
-  // Nav active
-  if (p > 0) $$('.nav-link, .mobile-menu-link').forEach(a => a.classList.toggle('active', a.dataset.section === 'contact'));
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const name    = ($('cfName')?.value    || '').trim();
+    const email   = ($('cfEmail')?.value   || '').trim();
+    const subject = ($('cfSubject')?.value || '').trim();
+    const message = ($('cfMessage')?.value || '').trim();
+
+    const subj = encodeURIComponent(subject || `Portfolio inquiry from ${name || 'a visitor'}`);
+    const body  = encodeURIComponent(
+      `${message}\n\n—\nFrom: ${name}\nReply-to: ${email}`
+    );
+    window.location.href = `mailto:priya9407@example.com?subject=${subj}&body=${body}`;
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   NAVBAR ACTIVE + SCROLLED STATE
+══════════════════════════════════════════════════ */
+function updateNavActive(sy) {
+  const sections = ['experience','projects','skills','contact'];
+  let active = null;
+  for (const id of sections) {
+    const el = document.getElementById(id);
+    if (el && sy >= el.offsetTop - window.innerHeight * 0.4) {
+      active = id;
+    }
+  }
+  if (!active) return; // hero/about handled by HA progress
+  $$('.nav-link, .mobile-menu-link').forEach(a => {
+    a.classList.toggle('active', a.dataset.section === active);
+  });
 }
 
 /* ══════════════════════════════════════════════════
@@ -381,36 +418,27 @@ function updateContactCanvas() {
 function onScroll() {
   const sy  = window.scrollY;
   const max = document.body.scrollHeight - window.innerHeight;
-  const gp  = sy / max; // global progress
+  const gp  = max > 0 ? sy / max : 0;
 
   // Progress bar
   scrollPrg.style.width = (gp * 100) + '%';
 
-  // Navbar
-  navbar.classList.toggle('visible', sy > 30);
+  // Navbar visibility + scrolled glass
+  navbar.classList.toggle('visible', sy > 20);
+  navbar.classList.toggle('scrolled', sy > 60);
 
-  // Determine which wrapper is in view
-  const haBottom  = haWrapper.offsetTop + haWrapper.offsetHeight;
-  const ctxTop    = ctxWrapper.offsetTop;
+  // Which zone are we in?
+  const haBottom = haWrapper.offsetTop + haWrapper.offsetHeight;
 
   if (sy < haBottom) {
-    // In hero/about zone
+    // Hero / About zone
     const p = haProgress();
     haTargetFrame = haProgressToFrame(p);
     updateHAScenes(p);
-  } else if (sy >= ctxTop) {
-    // In contact zone
-    updateContactCanvas();
   } else {
-    // Projects / Skills zone — both canvases frozen
+    // Everything below — projects / skills / contact
     updateProjectsScroll();
-    $$('.nav-link, .mobile-menu-link').forEach(a => {
-      const inSkills = sy >= ($('skills')?.offsetTop || 0) - 200;
-      a.classList.toggle('active',
-        (inSkills && a.dataset.section === 'skills') ||
-        (!inSkills && a.dataset.section === 'projects')
-      );
-    });
+    updateNavActive(sy);
   }
 
   // Always update projects scroll
@@ -418,44 +446,68 @@ function onScroll() {
 }
 
 /* ══════════════════════════════════════════════════
-   RAF RENDER LOOP — smooth lerp
+   RAF RENDER LOOP — smooth frame lerp
 ══════════════════════════════════════════════════ */
 function loop() {
   rafId = requestAnimationFrame(loop);
 
-  // HA canvas
   haCurFrame += (haTargetFrame - haCurFrame) * 0.18;
   const haIdx = Math.max(HA_START, Math.min(HA_END, Math.round(haCurFrame)));
   const haImg = frames[haIdx];
   if (haImg && haImg.complete && haImg.naturalWidth) drawHAFrame(haImg);
-
-  // Contact canvas
-  ctxCurFrame += (ctxTargetFrame - ctxCurFrame) * 0.18;
-  const ctxIdx = Math.max(CTX_START, Math.min(CTX_END, Math.round(ctxCurFrame)));
-  const ctxImg = frames[ctxIdx];
-  if (ctxImg && ctxImg.complete && ctxImg.naturalWidth) drawCtxFrame(ctxImg);
 }
 
 /* ══════════════════════════════════════════════════
    NAV SMOOTH SCROLL
 ══════════════════════════════════════════════════ */
 function setupNav() {
-  const targets = {
-    home:     () => 0,
-    about:    () => haWrapper.offsetTop + haWrapper.offsetHeight * 0.55,
-    projects: () => projSection.offsetTop,
-    skills:   () => ($('skills') || {}).offsetTop || 0,
-    contact:  () => ctxWrapper.offsetTop,
-  };
-
   $$('.nav-link, .btn-primary, .btn-ghost, .nav-cta').forEach(a => {
     const href = a.getAttribute('href');
     if (!href || !href.startsWith('#')) return;
     const key = href.slice(1);
-    if (!targets[key]) return;
+
     a.addEventListener('click', e => {
       e.preventDefault();
-      window.scrollTo({ top: targets[key](), behavior: 'smooth' });
+      let top = 0;
+      if (key === 'home') {
+        top = 0;
+      } else if (key === 'about') {
+        top = haWrapper.offsetTop + haWrapper.offsetHeight * 0.55;
+      } else {
+        const el = document.getElementById(key);
+        if (el) top = el.offsetTop;
+      }
+      window.scrollTo({ top, behavior: 'smooth' });
+    });
+  });
+}
+
+/* ══════════════════════════════════════════════════
+   PARALLAX on 3D CONTACT SHAPES — mouse tracking
+══════════════════════════════════════════════════ */
+function setupContactParallax() {
+  const contactSection = document.getElementById('contact');
+  if (!contactSection || IS_MOBILE()) return;
+
+  const shapes = $$('.contact-3d-bg .shape');
+  contactSection.addEventListener('mousemove', e => {
+    const r  = contactSection.getBoundingClientRect();
+    const mx = (e.clientX - r.left) / r.width  - 0.5; // -0.5 to 0.5
+    const my = (e.clientY - r.top)  / r.height - 0.5;
+
+    shapes.forEach((el, i) => {
+      const depth = (i % 3 + 1) * 8; // different parallax depths
+      const tx = mx * depth;
+      const ty = my * depth;
+      el.style.setProperty('--px', tx.toFixed(1) + 'px');
+      el.style.setProperty('--py', ty.toFixed(1) + 'px');
+    });
+  });
+
+  contactSection.addEventListener('mouseleave', () => {
+    shapes.forEach(el => {
+      el.style.setProperty('--px', '0px');
+      el.style.setProperty('--py', '0px');
     });
   });
 }
@@ -464,17 +516,9 @@ function setupNav() {
    RESIZE HANDLER
 ══════════════════════════════════════════════════ */
 function onResize() {
-  const nowMobile = IS_MOBILE();
+  isMobileNow = IS_MOBILE();
   resizeCanvases();
   setupProjectsSpacer();
-
-  // If mobile/desktop state changed, reload frames from correct folder
-  if (nowMobile !== isMobileNow) {
-    isMobileNow = nowMobile;
-    loadedCount = 0;
-    frames = [];
-    preloadAll(); // non-blocking, frames update as they load
-  }
 }
 
 /* ══════════════════════════════════════════════════
@@ -482,36 +526,39 @@ function onResize() {
 ══════════════════════════════════════════════════ */
 async function init() {
   resizeCanvases();
-
-  // Setup hamburger first (no async dependency)
   setupHamburger();
 
-  // Preload all frames
+  // Preload frames 1–70
   await preloadAll();
 
   // Small settle delay
-  await new Promise(r => setTimeout(r, 300));
+  await new Promise(r => setTimeout(r, 250));
 
   // Hide loader
   loader.classList.add('hidden');
 
-  // Setup
+  // Setup everything
   setupProjectsSpacer();
-  setupSkillsObserver();
+  setupScrollReveal();
   setupNav();
+  setupContactForm();
+  setupContactParallax();
 
-  // Show first frame and initial scene
+  if (!IS_MOBILE()) {
+    setupTilt('.pcard', 8);
+    setupTilt('.skill-group', 6);
+  }
+
+  // Render first frame
   const f1 = frames[1];
   if (f1 && f1.complete) drawHAFrame(f1);
-  const fCtx = frames[CTX_START];
-  if (fCtx && fCtx.complete) drawCtxFrame(fCtx);
 
   // Activate hero scene
   sceneHero.classList.add('active');
   roleWord.textContent = ROLES[0];
 
   // Navbar visible after brief delay
-  setTimeout(() => navbar.classList.add('visible'), 600);
+  setTimeout(() => navbar.classList.add('visible'), 500);
 
   // Listeners
   window.addEventListener('scroll', onScroll, { passive: true });
@@ -519,6 +566,9 @@ async function init() {
 
   // Start render loop
   loop();
+
+  // Trigger scroll once to set initial state
+  onScroll();
 }
 
 window.addEventListener('DOMContentLoaded', init);
